@@ -118,7 +118,7 @@
 
 <html>
 <head>
-	<title>Do Vision-Language Pretrained Models Learn Composable Primitive Concepts?</title>
+	<title>Emergence of State Representations in Embodied Sequence Modeling</title>
 	<meta property="og:image" content="Path to my teaser.png"/> <!-- Facebook automatically scrapes this. Go to https://developers.facebook.com/tools/debug/ if you update and want to force Facebook to rescrape. -->
 	<meta property="og:title" content="Creative and Descriptive Paper Title." />
 	<meta property="og:description" content="Paper description." />
@@ -147,16 +147,37 @@
 				<tr>
 					<td align=center width=100px>
 						<center>
-							<span style="font-size:24px">Tian Yun</span>
+							<span style="font-size:24px">Tian Yun*</span>
 							<br>
 							<span style="font-size:16px">Brown University</span>
 						</center>
 					</td>
 					<td align=center width=100px>
 						<center>
-							<span style="font-size:24px">Usha Bhalla</span>
+							<span style="font-size:24px">Zilai Zeng*</span>
 							<br>
 							<span style="font-size:16px">Brown University</span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px">Kunal Handa</span>
+							<br>
+							<span style="font-size:16px">Brown University</span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px">Ashish V. Thapliyal</span>
+							<br>
+							<span style="font-size:16px">Google Research</span>
+						</center>
+					</td>
+					<td align=center width=100px>
+						<center>
+							<span style="font-size:24px">Bo Pang</span>
+							<br>
+							<span style="font-size:16px">Google Research</span>
 						</center>
 					</td>
 					<td align=center width=100px>
@@ -179,12 +200,12 @@
 				<tr>
 					<td align=center width=120px>
 						<center>
-							<div class="buttons" style="margin-bottom: 8px;"><a class="btn btn-primary" role="button" href="https://arxiv.org/abs/2203.17271">Paper</a></div>
+							<div class="buttons" style="margin-bottom: 8px;"><a class="btn btn-primary" role="button" href="https://grounded-seqmodel.github.io">Paper</a></div>
 						</center>
 					</td>
 					<td align=center width=120px>
 						<center>
-							<div class="buttons" style="margin-bottom: 8px;"><a class="btn btn-primary" role="button" href="https://github.com/tttyuntian/vlm_primitive_concepts.git">Code</a></div>
+							<div class="buttons" style="margin-bottom: 8px;"><a class="btn btn-primary" role="button" href="https://github.com/tttyuntian/abstract-state-seqmodel.git">Code</a></div>
 						</center>
 					</td>
 				</tr>
@@ -198,26 +219,27 @@
 		<center><h1>Abstract</h1></center>
 		<tr>
 			<td>
-				Vision-language (VL) pretrained models have achieved impressive performance on multimodal reasoning and zero-shot recognition tasks. Many of these VL models are pretrained on unlabeled image and caption pairs from the internet. In this paper, we study whether representations of primitive concepts–such as colors, shapes, or the attributes of object parts–emerge automatically within these pretrained VL models. We propose a two-step framework, Compositional Concept Mapping (CompMap), to investigate this. CompMap first asks a VL model to generate concept activations with text prompts from a predefined list of primitive concepts, and then learns to construct an explicit composition model that maps the primitive concept activations (e.g. the likelihood of black tail or red wing) to composite concepts (e.g. a red-winged blackbird). We demonstrate that a composition model can be designed as a set operation, and show that a composition model is straightforward for machines to learn from ground truth primitive concepts (as a linear classifier). We thus hypothesize that if primitive concepts indeed emerge in a VL pretrained model, its primitive concept activations can be used to learn a composition model similar to the one designed by experts. We propose a quantitative metric to measure the degree of similarity, and refer to the metric as the interpretability of the VL models’ learned primitive concept representations. We also measure the classification accuracy when using the primitive concept activations and the learned composition model to predict the composite concepts, and refer to it as the usefulness metric. Our study reveals that state-of-the-art VL pretrained models learn primitive concepts that are highly useful for fine-grained visual recognition on the CUB dataset, and compositional generalization tasks on the MIT-States dataset. However, we observe that the learned composition models have low interpretability in our qualitative analyses. Our results reveal the limitations of existing VL models, and the necessity of pretraining objectives that encourage the acquisition of primitive concepts.
+				Reinforcement learning via sequence modeling aims to mimic the success of language models, where actions taken by an embodied agent are modeled as tokens to predict. Despite their promising performance, it remains unclear if embodied sequence modeling leads to the emergence of internal representations that represent the environmental state information. A model that lacks abstract state representations would be liable to make decisions based on surface statistics which fail to generalize. We take the BabyAI environment, a grid world in which language-conditioned navigation tasks are performed, and build a sequence modeling Transformer, which takes a language instruction, a sequence of actions, and environmental observations as its inputs. In order to investigate the emergence of abstract state representations, we design a "blindfolded" navigation task, where only the initial environmental layout, the language instruction, and the action sequence to complete the task are available for training. <br>
+				Our probing results show that intermediate environmental layouts can be reasonably reconstructed from the internal activations of a trained model, and that language instructions play a role on the construction accuracy. Our results suggest that many key features of state representations can emerge via embodied sequence modeling, supporting an optimistic outlook for applications of sequence modeling objectives to more complex embodied decision-making domains.
 			</td>
 		</tr>
 	</table>
 	<br>
 
-	<hr>
+	<!-- <hr>
 	<center><h1>Video Presentation</h1></center>
 	<p align="center">
 		<iframe width="660" height="395" src="https://www.youtube.com/embed/qerql58NeeE" frameborder="0" allowfullscreen align="center"></iframe>
 	</p>
-	<hr>
+	<hr> -->
 
-	<center><h1>Methods</h1></center>
+	<center><h1>BabyAI</h1></center>
 
 	<table align=center width=400px>
 		<tr>
 			<td align=center width=400px>
 				<center>
-					<td><img class="round" style="width:450px" src="./resources/pipeline.png"/></td>
+					<td><img class="round" style="width:450px" src="./resources/babai_illustration.png"/></td>
 				</center>
 			</td>
 		</tr>
@@ -226,7 +248,30 @@
 		<center>
 			<tr>
 				<td>
-					We propose a two-step framework, Compositional Concept Mapping (CompMap). In "Concept Prompting" module, a pretrained vision-and-language (VL) model is used to generate concept activations from images and a set of concepts, where each concept is represented by one or a few text prompts. In "Composition Learning" module, a linear composition model is trained on concept activations (either predicted by a pretrained VL model or annotated by human experts) to predict the composite concepts (e.g. green violetear). We use composition models as a proxy to understand how well pretrained VL models learn primitive concepts.
+					WIP.
+				</td>
+			</tr>
+		</center>
+	</table>
+
+	<br>
+
+	<center><h1>Methods</h1></center>
+
+	<table align=center width=400px>
+		<tr>
+			<td align=center width=400px>
+				<center>
+					<td><img class="round" style="width:450px" src="./resources/sequece_model_architecture.png"/></td>
+				</center>
+			</td>
+		</tr>
+	</table>
+	<table align=center width=850px>
+		<center>
+			<tr>
+				<td>
+					WIP.
 				</td>
 			</tr>
 		</center>
@@ -238,8 +283,8 @@
 		<center><h1>Paper and Supplementary Material</h1></center>
 		<tr>
 			<td><a href=""><img class="layered-paper-big" style="height:175px" src="./resources/paper.png"/></a></td>
-			<td><span style="font-size:14pt">Tian Yun, Usha BHalla, Ellie Pavlick, Chen Sun.<br>
-				<b>Do Vision-Language Pretrained Models Learn Composable Primitive Concepts?</b><br>
+			<td><span style="font-size:14pt">Tian Yun*, Zilai Zeng, Kunal Handa, Ashish V. Thapliyal, Bo Pang, Ellie Pavlick, Chen Sun.<br>
+				<b>Emergence of State Representations in Embodied Sequence Modeling</b><br>
 				In TMLR.<br>
 				<!-- (<a href="./resources/camera-ready.pdf">camera ready</a>)<br> -->
 				<span style="font-size:4pt"><a href=""><br></a>
@@ -265,7 +310,7 @@
 			<td width=400px>
 				<left>
 					<center><h1>Acknowledgements</h1></center>
-					We would like to thank all reviewers and the action editor for their valuable feedback. We would like to thank Calvin Luo and Lishuo Pan for their discussions and insights. This work is in part supported by Adobe, Meta AI, Samsung, and Richard B. Salomon Faculty Research Awards for C.S.
+					We would like to thank anonymous reviewers for their detailed and constructive comments. We are very grateful to Xi Chen, Sebastian Goodman, and Radu Soricut for useful discussions . We appreciate Kenneth Li for helpful feedback on probing experiments and further conversation about potentials of the project. We thank Haotian Fu, Apoorv Khandelwal, Michael Lepori, Calvin Luo, and Jack Merullo for the help on the project. Part of the work was done while Tian Yun was a student researcher at Google Research. This project is in part supported by Samsung Advanced Institute of Technology.
 
 					<br>
 					This template was originally made by <a href="http://web.mit.edu/phillipi/">Phillip Isola</a> and <a href="http://richzhang.github.io/">Richard Zhang</a> for a <a href="http://richzhang.github.io/colorization/">colorful</a> ECCV project; the code can be found <a href="https://github.com/richzhang/webpage-template">here</a>.
